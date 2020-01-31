@@ -1,0 +1,5 @@
+#JSGF V1.0;
+grammar start_the_test;
+public <rule> = <command> | <noise>;
+<command> = start the test;
+<noise> = ke | yo | ki | so | na | tu | k | l | h | mu | ni | ro | g | se | t | ti | ko | su | x | v | to | a | wo | n | he | q | wa | ra | ha | wu | lu | ho | li | ku | la | me | s | nu | re | ta | z | f | ru | j | mo | hu | ma | o | te | no | ka | r | sa | hi | ne | p | lo | le | w | ya;
