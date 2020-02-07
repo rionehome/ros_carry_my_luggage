@@ -28,6 +28,12 @@ class SoundSystem(Node):
             10
         )
 
+        self.signal_publisher = self.create_publisher(
+            Command,
+            '/signal',
+            10
+        )
+
 
     # recieve a command {Command, Content}
     def command_callback(self, msg):
@@ -37,10 +43,10 @@ class SoundSystem(Node):
             if module_pico.speak(msg.content) == 1:
                 self.cerebrum_publisher("speak")
 
-        # Start the test
+        # Start the test and start follow me
         if 'start' == msg.command:
             if module_start.start() == 1:
-                self.cerebrum_publisher("start")
+                self.sub_publisher("START")
 
         # grab a bag
         if 'arm' == msg.command:
@@ -52,10 +58,10 @@ class SoundSystem(Node):
                 if module_arm.arm(content) == 1:
                     self.cerebrum_publisher("arm_end")
 
-        # Start follow me, content is first or end
+        # Stop follow me
         if 'follow' == msg.command:
             if str(module_follow.follow()) == "car":
-                self.cerebrum_publisher("follow","car")
+                self.sub_publisher("STOP")
 
         # Make map
         content = None
@@ -76,6 +82,17 @@ class SoundSystem(Node):
 
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
+
+        # Publish START or STOP
+        def sub_publisher(self, command, content=""):
+            _trans_message = Command()
+            # _trans_message.flag = flag
+            _trans_message.command = command
+            _trans_message.content = content
+            _trans_message.sender = "sound"
+
+            self.signal_publisher.publish(_trans_message)
+            # self.destroy_publisher(self.signal_publisher)
 
 
 def main():
