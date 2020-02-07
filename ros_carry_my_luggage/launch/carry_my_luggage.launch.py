@@ -14,4 +14,10 @@ def generate_launch_description():
             node_executable="ydlidar_node",
             output="screen"
         ),
+
+        launch_ros.actions.Node(
+            package="follow_me",
+            node_executable="follow_me",
+            output="screen"
+        )
     ])
