@@ -14,7 +14,13 @@ hotword_dic_path = file_path.replace(
 hotword_gram_path = file_path.replace(
     'module/module_start.py', '/dictionary/start_the_test.gram')
 
-# Detect hotword, "hey ducker"
+def start():
+    start_sentence = "I will start carry my luggage."
+    print("\n---------------------------------\n", start_sentence, "\n---------------------------------\n")
+    module_pico.speak(start_sentence)
+
+"""
+# Detect hotword
 def start():
 
     ###############
@@ -44,6 +50,7 @@ def start():
             del(live_speech)
             break
     return 1
+"""
 
 # setup livespeech
 def setup_live_speech(lm, dict_path, jsgf_path, kws_threshold):
