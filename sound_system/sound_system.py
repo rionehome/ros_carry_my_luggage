@@ -83,16 +83,16 @@ class SoundSystem(Node):
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
 
-        # Publish START or STOP
-        def sub_publisher(self, command, content=""):
-            _trans_message = Command()
-            # _trans_message.flag = flag
-            _trans_message.command = command
-            _trans_message.content = content
-            _trans_message.sender = "sound"
+    # Publish START or STOP
+    def sub_publisher(self, command, content=""):
+        _trans_message = Command()
+        # _trans_message.flag = flag
+        _trans_message.command = command
+        _trans_message.content = content
+        _trans_message.sender = "sound"
 
-            self.signal_publisher.publish(_trans_message)
-            # self.destroy_publisher(self.signal_publisher)
+        self.signal_publisher.publish(_trans_message)
+        # self.destroy_publisher(self.signal_publisher)
 
 
 def main():
