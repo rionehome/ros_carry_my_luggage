@@ -11,7 +11,7 @@ class SoundSystem1(Node):
         super(SoundSystem1, self).__init__('SoundSystem1')
 
         self.create_subscription(
-            Bool, 'turtlebot/_bottun0',
+            Bool, 'turtlebot2/button0',
             self.command_callback,
             10
         )

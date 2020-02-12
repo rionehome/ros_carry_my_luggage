@@ -15,8 +15,14 @@ class SoundSystem3(Node):
             10
         )
 
-        """
         self.senses_publisher = self.create_publisher(
+            Command,
+            '/signal',
+            10
+        )
+
+        """
+        self.senses_publisher2 = self.create_publisher(
             Command,
             'control/arm2',
             10
@@ -29,7 +35,8 @@ class SoundSystem3(Node):
 
         # Start the test and start follow me
         if "follow" == msg.command:
-            module_follow.follow()
+            if module_follow.follow() == 1:
+                self.main_publisher("STOP")
 
 
     # Publish a result of an action

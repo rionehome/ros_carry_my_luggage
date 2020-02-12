@@ -70,7 +70,7 @@ def arm(when):
 
                         pause()
                         module_beep.beep("stop")
-                        answer = "Sure, I will close my hand. I will follow you soon."
+                        answer = "Thank you. I will follow you soon."
                         print("\n---------------------------------\n", answer,
                               "\n---------------------------------\n")
                         module_pico.speak(answer)

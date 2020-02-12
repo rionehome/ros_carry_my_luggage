@@ -17,7 +17,7 @@ class SoundSystem2(Node):
 
         self.senses_publisher = self.create_publisher(
             Command,
-            'control/follow_me/signal',
+            '/signal',
             10
         )
 

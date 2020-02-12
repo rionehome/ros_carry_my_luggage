@@ -19,5 +19,25 @@ def generate_launch_description():
             package="follow_me",
             node_executable="follow_me",
             output="screen"
+
+        ),
+
+        launch_ros.actions.Node(
+            package="sound_system",
+            node_executable="turtlebot_button0",
+            output="screen"
+        ),
+
+        launch_ros.actions.Node(
+            package="sound_system",
+            node_executable="sound_speak1",
+            output="screen"
+        ),
+
+        launch_ros.actions.Node(
+            package="sound_system",
+            node_executable="sound_stop",
+            output="screen"
+
         )
     ])
