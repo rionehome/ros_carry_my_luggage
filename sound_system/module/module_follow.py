@@ -40,6 +40,7 @@ def follow():
     global live_speech
 
     # Start following me and stop
+    sleep(2)
     stop_sentence = "I am following you. Please stay in my sight, and say stop following me when you arrived. "
     print("\n---------------------------------\n", stop_sentence, "\n---------------------------------\n")
     module_pico.speak(stop_sentence)
@@ -98,7 +99,13 @@ def follow():
                                 print("\n---------------------------------\n", answer,
                                       "\n---------------------------------\n")
                                 module_pico.speak(answer)
-                                return "car"
+
+                                start_sentence = "Please take your bag, thank you."
+                                print("\n---------------------------------\n", start_sentence,
+                                      "\n---------------------------------\n")
+                                module_pico.speak(start_sentence)
+
+                                return 1
 
                             elif str(question3) == "no":
 

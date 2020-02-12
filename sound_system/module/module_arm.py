@@ -45,7 +45,7 @@ def arm(when):
         sleep(5)
 
         while True:
-            sentence = "Did you put your bag on my hand ?"
+            sentence = "Did you put your bag on me ?"
             print("\n---------------------------------\n", sentence, "\n---------------------------------\n")
             module_pico.speak(sentence)
             file = open(result_path, 'a')

@@ -13,8 +13,8 @@ class MakePublisher(Node):
 
     def make_pub(self):
         while 1:
-            #topic = input('topic:')
-            topic = 'sound_system/command'
+            topic = input('topic:')
+            #topic = 'sound_system/command'
             print('topic:', topic)
             test_command = input('Command:')
             test_content = input('Content:')
