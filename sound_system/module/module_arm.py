@@ -45,7 +45,7 @@ def arm(when):
         sleep(5)
 
         while True:
-            sentence = "Did you put your bag on my hand ?"
+            sentence = "Did you put your bag on me ?"
             print("\n---------------------------------\n", sentence, "\n---------------------------------\n")
             module_pico.speak(sentence)
             file = open(result_path, 'a')
@@ -70,7 +70,7 @@ def arm(when):
 
                         pause()
                         module_beep.beep("stop")
-                        answer = "Sure, I will close my hand. I will follow you soon."
+                        answer = "Thank you. I will follow you soon."
                         print("\n---------------------------------\n", answer,
                               "\n---------------------------------\n")
                         module_pico.speak(answer)
