@@ -3,7 +3,7 @@ from rclpy.node import Node
 
 from module import module_start
 
-from rione_msgs.msg import Command
+from rione_msgs.msg import Command, Location, Request
 from std_msgs.msg import Bool
 
 class SoundSystem1(Node):
@@ -11,7 +11,8 @@ class SoundSystem1(Node):
         super(SoundSystem1, self).__init__('SoundSystem1')
 
         self.create_subscription(
-            Bool, 'turtlebot2/button0',
+            Bool,
+            'turtlebot2/button0',
             self.command_callback,
             10
         )
@@ -19,6 +20,12 @@ class SoundSystem1(Node):
         self.senses_publisher = self.create_publisher(
             Command,
             'sound/speak1',
+            10
+        )
+
+        self.current_position_publisher = self.create_publisher(
+            Request,
+            "/location/register_current_location",
             10
         )
 
@@ -30,6 +37,7 @@ class SoundSystem1(Node):
         if True == msg.data:
             if module_start.start() == 1:
                 self.main_publisher("arm","first")
+                self.publish_regist_location()                
 
 
     # Publish a result of an action
@@ -43,6 +51,17 @@ class SoundSystem1(Node):
 
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
+
+    #
+    # Publish to location register to regist current position
+    # 
+    def publish_regist_location(self):
+        _location = Location()
+        _location.name = "start_position"
+        _request = Request()
+        _request.file = "carry_my_luggage"
+        _request.locations.append(_location)
+        self.current_position_publisher.publish(_request)
 
 def main():
     rclpy.init()
