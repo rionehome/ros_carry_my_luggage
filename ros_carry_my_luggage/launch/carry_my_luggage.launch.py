@@ -47,4 +47,11 @@ def generate_launch_description():
             output="screen"
 
         ),
+
+        launch_ros.actions.Node(
+            package="slam_gmapping",
+            node_executable="slam_gmapping",
+            output="screen"
+
+        ),
     ])
