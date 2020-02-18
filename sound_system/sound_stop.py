@@ -2,8 +2,9 @@ import rclpy
 from rclpy.node import Node
 
 from module import module_follow
+from time import sleep
 
-from rione_msgs.msg import Command
+from rione_msgs.msg import Command, Location, Request
 
 class SoundSystem3(Node):
     def __init__(self):
@@ -29,6 +30,12 @@ class SoundSystem3(Node):
         )
         """
 
+        self.send_return_signal = self.create_publisher(
+            Request,
+            "/location/send_goal_location",
+            10
+        )
+
 
     # recieve a command {Command, Content}
     def command_callback(self, msg):
@@ -37,6 +44,8 @@ class SoundSystem3(Node):
         if "follow" == msg.command:
             if module_follow.follow() == 1:
                 self.main_publisher("STOP")
+                sleep(5)
+                self.publish_regist_location()
 
 
     # Publish a result of an action
@@ -50,6 +59,17 @@ class SoundSystem3(Node):
 
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
+
+    def publish_regist_location(self):
+        _location = Location()
+        _location.name = "start_position"
+        _request = Request()
+        _request.locations.append(_location)
+        _request.file = "carry_my_luggage"
+
+        self.send_return_signal.publish(_request)
+
+    
 
 def main():
     rclpy.init()
