@@ -39,5 +39,12 @@ def generate_launch_description():
             node_executable="sound_stop",
             output="screen"
 
-        )
+        ),
+
+        launch_ros.actions.Node(
+            package="location_register",
+            node_executable="location_register_node",
+            output="screen"
+
+        ),
     ])
