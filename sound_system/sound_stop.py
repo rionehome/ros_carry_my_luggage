@@ -4,7 +4,8 @@ from rclpy.node import Node
 from module import module_follow
 from time import sleep
 
-from rione_msgs.msg import Command, Location, Request
+from rione_msgs.msg import Command, Location
+from rione_msgs.srv import RequestLocation
 
 class SoundSystem3(Node):
     def __init__(self):
@@ -30,11 +31,13 @@ class SoundSystem3(Node):
         )
         """
 
-        self.send_return_signal = self.create_publisher(
-            Request,
-            "/location/send_goal_location",
-            10
+        self.cli = self.create_client(
+            RequestLocation,
+            '/location_register'
         )
+
+        self.req = RequestLocation.Request()
+        self.location = Location()
 
 
     # recieve a command {Command, Content}
@@ -46,6 +49,7 @@ class SoundSystem3(Node):
                 self.main_publisher("STOP")
                 sleep(5)
                 self.publish_regist_location()
+                self.send_goal_position()
 
 
     # Publish a result of an action
@@ -60,15 +64,15 @@ class SoundSystem3(Node):
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
 
-    def publish_regist_location(self):
-        _location = Location()
-        _location.name = "start_position"
-        _request = Request()
-        _request.locations.append(_location)
-        _request.file = "carry_my_luggage"
-
-        self.send_return_signal.publish(_request)
-
+    #
+    # Publish to location register to regist current position
+    # 
+    def send_goal_position(self):
+        self.req.command = "SEND_GOAL"
+        self.req.file = "carry_my_luggage"
+        self.location.name = "start_position"
+        self.req.locations.append(self.location)
+        self.future = self.cli.call_async(self.req)
     
 
 def main():

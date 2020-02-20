@@ -3,7 +3,8 @@ from rclpy.node import Node
 
 from module import module_start
 
-from rione_msgs.msg import Command, Location, Request
+from rione_msgs.msg import Command, Location
+from rione_msgs.srv import RequestLocation
 from std_msgs.msg import Bool
 
 class SoundSystem1(Node):
@@ -23,12 +24,13 @@ class SoundSystem1(Node):
             10
         )
 
-        self.current_position_publisher = self.create_publisher(
-            Request,
-            "/location/register_current_location",
-            10
+        self.cli = self.create_client(
+            RequestLocation,
+            '/location_register'
         )
 
+        self.req = RequestLocation.Request()
+        self.location = Location()
 
     # recieve a command {Command, Content}
     def command_callback(self, msg):
@@ -37,7 +39,7 @@ class SoundSystem1(Node):
         if True == msg.data:
             if module_start.start() == 1:
                 self.main_publisher("arm","first")
-                self.publish_regist_location()                
+                self.send_start_position()
 
 
     # Publish a result of an action
@@ -55,13 +57,12 @@ class SoundSystem1(Node):
     #
     # Publish to location register to regist current position
     # 
-    def publish_regist_location(self):
-        _location = Location()
-        _location.name = "start_position"
-        _request = Request()
-        _request.file = "carry_my_luggage"
-        _request.locations.append(_location)
-        self.current_position_publisher.publish(_request)
+    def send_start_position(self):
+        self.req.command = "REGIST"
+        self.req.file = "carry_my_luggage"
+        self.location.name = "start_position"
+        self.req.locations.append(self.location)
+        self.future = self.cli.call_async(self.req)
 
 def main():
     rclpy.init()
