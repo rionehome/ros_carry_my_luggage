@@ -14,7 +14,7 @@ class MakePublisher_str(Node):
     def make_pub(self):
         while 1:
             #topic = input('topic:')
-            topic = 'turtlebot/_bottun0'
+            topic = 'turtlebot2/button0'
             print('topic:', topic)
             Command = input('Command:')
             Content = input('Content:')
@@ -25,6 +25,7 @@ class MakePublisher_str(Node):
                 msg.data = True
                 self.pub.publish(msg)
             else:
+                #message = Command
                 message = 'Command:' + Command + ',Content:' + Content
                 # i = input('enter')
                 self.pub = self.create_publisher(

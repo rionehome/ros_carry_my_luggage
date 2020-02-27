@@ -42,6 +42,9 @@ def arm(when):
         start_sentence = "Please put your bag on me by 5 seconds."
         print("\n---------------------------------\n", start_sentence, "\n---------------------------------\n")
         module_pico.speak(start_sentence)
+        file = open(result_path, 'a')
+        file.write(str(datetime.datetime.now()) + ": " + start_sentence + "\n")
+        file.close()
         sleep(5)
 
         while True:
@@ -74,6 +77,9 @@ def arm(when):
                         print("\n---------------------------------\n", answer,
                               "\n---------------------------------\n")
                         module_pico.speak(answer)
+                        file = open(result_path, 'a')
+                        file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                        file.close()
                         return 1
 
                     elif str(question) == "no":
@@ -85,6 +91,9 @@ def arm(when):
                         print("\n---------------------------------\n", answer,
                               "\n---------------------------------\n")
                         module_pico.speak(answer)
+                        file = open(result_path, 'a')
+                        file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                        file.close()
                         setup_live_speech(False, yes_no_dic_path, yes_no_gram_path, 1e-10)
                         noise_words = read_noise_word()
                         break
@@ -105,9 +114,13 @@ def arm(when):
                     pass
 
     elif when == "end":
-        start_sentence = "Please take your bag, thank you."
-        print("\n---------------------------------\n", start_sentence, "\n---------------------------------\n")
-        module_pico.speak(start_sentence)
+        end_sentence = "Please take your bag, thank you."
+        print("\n---------------------------------\n", end_sentence, "\n---------------------------------\n")
+        module_pico.speak(end_sentence)
+        file = open(result_path, 'a')
+        file.write(str(datetime.datetime.now()) + ": " + end_sentence + "\n")
+        file.close()
+        return 1
 
 
 # Stop lecognition

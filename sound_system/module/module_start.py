@@ -5,6 +5,8 @@ from pocketsphinx import LiveSpeech, get_model_path
 from . import module_pico
 from . import module_beep
 
+import datetime
+
 file_path = os.path.abspath(__file__)
 model_path = get_model_path()
 
@@ -13,7 +15,9 @@ hotword_dic_path = file_path.replace(
     'module/module_start.py', '/dictionary/start_the_test.dict')
 hotword_gram_path = file_path.replace(
     'module/module_start.py', '/dictionary/start_the_test.gram')
-
+# log file
+result_path = file_path.replace(
+    'module/module_start.py', 'log/log.txt')
 # Detect hotword, "hey ducker"
 def start():
 
@@ -35,11 +39,20 @@ def start():
     module_beep.beep("start")
     for phrase in live_speech:
         #print(phrase)
-        if 'start the test' == str(phrase):
+        if 'carry my luggage' == str(phrase):
             pause()
             module_beep.beep("stop")
             print(phrase)
-            module_pico.speak('Sure, I will start!')
+            file = open(result_path, 'a')
+            file.write("-----------\n" +
+                       str(datetime.datetime.now()) + ": " + str(phrase) + "\n")
+            file.close()
+
+            start_sentence = 'Sure, I will start!'
+            module_pico.speak(start_sentence)
+            file = open(result_path, 'a')
+            file.write(str(datetime.datetime.now()) + ": " + start_sentence + "\n")
+            file.close()
             live_speech.stop = True
             del(live_speech)
             break
