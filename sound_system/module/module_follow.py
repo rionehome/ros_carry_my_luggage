@@ -21,7 +21,7 @@ follow_gram_path = file_path.replace(
 
 # log file
 result_path = file_path.replace(
-    'module/module_follow.py', 'log/folllow-{}.txt').format(str(datetime.datetime.now()))
+    'module/module_follow.py', 'log/log.txt')
 
 # Listen, follow me otr stop following me
 def follow():

@@ -21,7 +21,7 @@ yes_no_gram_path = file_path.replace(
 
 # log file
 result_path = file_path.replace(
-    'module/module_arm.py', 'log/arm-{}.txt').format(str(datetime.datetime.now()))
+    'module/module_arm.py', 'log/log.txt')
 
 # Manipulate robot arm
 def arm(when):
