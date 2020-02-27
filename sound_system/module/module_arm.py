@@ -39,7 +39,7 @@ def arm(when):
     global live_speech
 
     if when == "first":
-        start_sentence = "Please put your bag on me by 5 seconds."
+        start_sentence = "Please put your bag on my hand by 5 seconds."
         print("\n---------------------------------\n", start_sentence, "\n---------------------------------\n")
         module_pico.speak(start_sentence)
         file = open(result_path, 'a')
@@ -48,7 +48,7 @@ def arm(when):
         sleep(5)
 
         while True:
-            sentence = "Did you put your bag on me ?"
+            sentence = "Did you put your bag on my hand ?"
             print("\n---------------------------------\n", sentence, "\n---------------------------------\n")
             module_pico.speak(sentence)
             file = open(result_path, 'a')
@@ -114,13 +114,73 @@ def arm(when):
                     pass
 
     elif when == "end":
-        end_sentence = "Please take your bag, thank you."
+        end_sentence = "Please take your bag by 5 seconds."
         print("\n---------------------------------\n", end_sentence, "\n---------------------------------\n")
         module_pico.speak(end_sentence)
         file = open(result_path, 'a')
         file.write(str(datetime.datetime.now()) + ": " + end_sentence + "\n")
         file.close()
-        return 1
+        sleep(5)
+
+        while True:
+            sentence = "Did you take your bag ?"
+            print("\n---------------------------------\n", sentence, "\n---------------------------------\n")
+            module_pico.speak(sentence)
+            file = open(result_path, 'a')
+            file.write(str(datetime.datetime.now()) + ": " + sentence + "\n")
+            file.close()
+
+            setup_live_speech(False, yes_no_dic_path, yes_no_gram_path, 1e-10)
+            module_beep.beep("start")
+            for question in live_speech:
+                print("\n[*] CONFIRMING ...")
+                # print(question)
+
+                # Noise list
+                noise_words = read_noise_word()
+
+                if str(question) not in noise_words:
+                    file = open(result_path, 'a')
+                    file.write(str(datetime.datetime.now()) + ": " + str(question) + "\n")
+                    file.close()
+
+                    if str(question) == "yes":
+
+                        pause()
+                        module_beep.beep("stop")
+                        answer = "Thank you."
+                        print("\n---------------------------------\n", answer,
+                              "\n---------------------------------\n")
+                        module_pico.speak(answer)
+                        file = open(result_path, 'a')
+                        file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                        file.close()
+                        return 1
+
+                    elif str(question) == "no":
+
+                        # Fail, listen one more time
+                        pause()
+                        module_beep.beep("stop")
+                        answer = "Sorry."
+                        print("\n---------------------------------\n", answer,
+                              "\n---------------------------------\n")
+                        module_pico.speak(answer)
+                        file = open(result_path, 'a')
+                        file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                        file.close()
+                        setup_live_speech(False, yes_no_dic_path, yes_no_gram_path, 1e-10)
+                        noise_words = read_noise_word()
+                        break
+
+                    elif str(question) == "please say again":
+
+                        pause()
+                        module_beep.beep("stop")
+                        # Ask yes-no question
+                        setup_live_speech(False, yes_no_dic_path, yes_no_gram_path, 1e-10)
+                        noise_words = read_noise_word()
+                        break
 
 
 # Stop lecognition

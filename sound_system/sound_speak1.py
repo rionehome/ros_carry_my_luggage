@@ -27,14 +27,22 @@ class SoundSystem2(Node):
             10
         )
 
+        self.senses_publisher3 = self.create_publisher(
+            Command,
+            '/control_manipulator',
+            10
+        )
+
     # recieve a command {Command, Content}
     def command_callback(self, msg):
 
         # Start the test and start follow me
         if "arm" == msg.command:
             if module_arm.arm(msg.content) == 1:
+                self.arm_publisher("CLOSE")
                 self.main_publisher("START")
                 self.sub_publisher("follow")
+
 
 
     # Publish a result of an action
@@ -59,6 +67,18 @@ class SoundSystem2(Node):
         _trans_message.sender = "sound"
 
         self.senses_publisher2.publish(_trans_message)
+        # self.destroy_publisher(self.senses_publisher)
+
+    # Publish a result of an action
+    def arm_publisher(self, command, content=""):
+
+        _trans_message = Command()
+        #_trans_message.flag = flag
+        _trans_message.command = command
+        _trans_message.content = content
+        _trans_message.sender = "sound"
+
+        self.senses_publisher3.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
 
 def main():

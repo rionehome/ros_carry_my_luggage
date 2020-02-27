@@ -44,6 +44,9 @@ def follow():
     stop_sentence = "I am following you. Please stay in my sight, and say stop following me when you arrived. "
     print("\n---------------------------------\n", stop_sentence, "\n---------------------------------\n")
     module_pico.speak(stop_sentence)
+    file = open(result_path, 'a')
+    file.write(str(datetime.datetime.now()) + ": " + stop_sentence + "\n")
+    file.close()
 
     setup_live_speech(False, follow_dic_path, follow_gram_path, 1e-10)
     module_beep.beep("start")
@@ -62,7 +65,7 @@ def follow():
                 file.close()
                 pause()
                 module_beep.beep("stop")
-                print("\n---------------------------------\n", str(question2), "\n---------------------------------\n")
+                #print("\n---------------------------------\n", str(question2), "\n---------------------------------\n")
 
                 # Detect yes (or stop following me) or no
                 flag = True
@@ -99,11 +102,9 @@ def follow():
                                 print("\n---------------------------------\n", answer,
                                       "\n---------------------------------\n")
                                 module_pico.speak(answer)
-
-                                start_sentence = "Please take your bag, thank you."
-                                print("\n---------------------------------\n", start_sentence,
-                                      "\n---------------------------------\n")
-                                module_pico.speak(start_sentence)
+                                file = open(result_path, 'a')
+                                file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                                file.close()
 
                                 return 1
 
@@ -116,6 +117,10 @@ def follow():
                                 print("\n---------------------------------\n", answer,
                                       "\n---------------------------------\n")
                                 module_pico.speak(answer)
+                                file = open(result_path, 'a')
+                                file.write(str(datetime.datetime.now()) + ": " + answer + "\n")
+                                file.close()
+
                                 setup_live_speech(False, follow_dic_path, follow_gram_path, 1e-10)
                                 noise_words = read_noise_word(follow_gram_path)
                                 flag = False

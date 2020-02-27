@@ -1,38 +1,32 @@
 import rclpy
 from rclpy.node import Node
 
-from module import module_start
+from module import module_arm
+from time import sleep
 
 from rione_msgs.msg import Command, Location
 from rione_msgs.srv import RequestLocation
-from std_msgs.msg import Bool
 
-class SoundSystem1(Node):
+
+class SoundSystem4(Node):
     def __init__(self):
-        super(SoundSystem1, self).__init__('SoundSystem1')
+        super(SoundSystem4, self).__init__('SoundSystem4')
 
         self.create_subscription(
-            Bool,
-            'turtlebot2/button0',
+            Command, 'sound/speak2',
             self.command_callback,
             10
         )
 
         self.senses_publisher = self.create_publisher(
             Command,
-            'sound/speak1',
+            '/control_manipulator',
             10
         )
 
         self.cli = self.create_client(
             RequestLocation,
             '/location_register'
-        )
-
-        self.senses_publisher2 = self.create_publisher(
-            Command,
-            '/control_manipulator',
-            10
         )
 
         self.req = RequestLocation.Request()
@@ -42,19 +36,17 @@ class SoundSystem1(Node):
     def command_callback(self, msg):
 
         # Start the test and start follow me
-        if True == msg.data:
-            if module_start.start() == 1:
-                self.arm_publisher("OPEN")
-                self.main_publisher("arm","first")
-                self.send_start_position()
-
-
+        if "arm" == msg.command:
+            if module_arm.arm(msg.content) == 1:
+                self.arm_publisher("CLOSE")
+                self.publish_regist_location()
+                self.send_goal_position()
 
     # Publish a result of an action
-    def main_publisher(self, command, content=""):
+    def arm_publisher(self, command, content=""):
 
         _trans_message = Command()
-        #_trans_message.flag = flag
+        # _trans_message.flag = flag
         _trans_message.command = command
         _trans_message.content = content
         _trans_message.sender = "sound"
@@ -62,31 +54,20 @@ class SoundSystem1(Node):
         self.senses_publisher.publish(_trans_message)
         # self.destroy_publisher(self.senses_publisher)
 
-    # Publish a result of an action
-    def arm_publisher(self, command, content=""):
-
-        _trans_message = Command()
-        #_trans_message.flag = flag
-        _trans_message.command = command
-        _trans_message.content = content
-        _trans_message.sender = "sound"
-
-        self.senses_publisher2.publish(_trans_message)
-        # self.destroy_publisher(self.senses_publisher)
-
     #
     # Publish to location register to regist current position
     #
-    def send_start_position(self):
-        self.req.command = "REGIST"
+    def send_goal_position(self):
+        self.req.command = "SEND_GOAL"
         self.req.file = "carry_my_luggage"
         self.location.name = "start_position"
         self.req.locations.append(self.location)
         self.future = self.cli.call_async(self.req)
 
+
 def main():
     rclpy.init()
-    node = SoundSystem1()
+    node = SoundSystem4()
     rclpy.spin(node)
 
 

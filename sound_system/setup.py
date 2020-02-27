@@ -11,6 +11,7 @@ setup(
         'turtlebot_button0',
         'sound_speak1',
         'sound_stop',
+        'sound_speak2',
     ],
     install_requires=['setuptools'],
     data_files=[
@@ -40,9 +41,6 @@ setup(
           'beep/start.wav',
           'beep/stop.wav'
           ]),
-        ('lib/sound_system/node/',
-         ['node/node_detect.py'
-          ]),
         ('lib/sound_system/log',
             ['log/log.txt'])
     ],
@@ -67,6 +65,7 @@ setup(
             'turtlebot_button0 = turtlebot_button0:main',
             'sound_speak1 = sound_speak1:main',
             'sound_stop = sound_stop:main',
+            'sound_speak2 = sound_speak2:main',
         ],
     },
 )
