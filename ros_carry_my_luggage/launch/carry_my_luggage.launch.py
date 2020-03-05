@@ -42,6 +42,20 @@ def generate_launch_description():
         ),
 
         launch_ros.actions.Node(
+            package="sound_system",
+            node_executable="sound_speak2",
+            output="screen"
+
+        ),
+
+        launch_ros.actions.Node(
+            package="sound_system",
+            node_executable="test_ui",
+            output="screen"
+
+        ),
+
+        launch_ros.actions.Node(
             package="location_register",
             node_executable="location_register_node",
             output="screen"

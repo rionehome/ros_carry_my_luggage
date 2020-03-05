@@ -12,6 +12,7 @@ setup(
         'sound_speak1',
         'sound_stop',
         'sound_speak2',
+        'test_ui',
     ],
     install_requires=['setuptools'],
     data_files=[
@@ -22,7 +23,11 @@ setup(
           'module/module_arm.py',
           'module/module_make_map.py',
           'module/module_beep.py',
-          'module/module_start.py'
+          'module/module_start.py',
+          'module/start_ui.py',
+          'module/stop_ui.py',
+          'module/pub_beep_start.py',
+          'module/pub_beep_stop.py',
           ]),
         ('lib/sound_system/dictionary/',
          ['dictionary/yes_no.dict',
@@ -66,6 +71,7 @@ setup(
             'sound_speak1 = sound_speak1:main',
             'sound_stop = sound_stop:main',
             'sound_speak2 = sound_speak2:main',
+            'test_ui = test_ui:main',
         ],
     },
 )
